@@ -4,12 +4,41 @@ AI-powered candidate evaluation API that analyzes candidate profiles and job des
 
 ## Quick Start
 
+### 1. Start the database
+
+```bash
+# Start PostgreSQL 17 (creates tables + seed data automatically)
+docker compose up -d
+```
+
+This spins up a PostgreSQL 17 instance on `localhost:5432` and seeds it with sample candidates and jobs.
+
+### 2. Set up environment
+
+```bash
+# Copy the example env file
+cp .env.example .env
+
+# Edit .env with your OpenAI API key
+```
+
+### 3. Install & run
+
 ```bash
 # Install dependencies
 uv sync
 
-# Or run API only
-uv run uvicorn main:app --reload
+# Run the API
+uv run uvicorn app.main:app --reload
+```
+
+### 4. Stop the database
+
+```bash
+docker compose down
+
+# Or nuke everything including data
+docker compose down -v
 ```
 
 ## Documentation
