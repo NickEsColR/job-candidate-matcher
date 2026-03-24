@@ -1,10 +1,13 @@
 """Database engine and session management."""
 
 from collections.abc import AsyncGenerator
+from typing import Any
 
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
 from app.core.settings import get_settings
+from app.infrastructure.exceptions import DatabaseError, IntegrityConstraintError
 
 settings = get_settings()
 
@@ -20,6 +23,20 @@ async_session_factory = async_sessionmaker(
     expire_on_commit=False,
 )
 
+
+def _translate_sqlalchemy_error(exc: SQLAlchemyError) -> DatabaseError:
+    """Translate SQLAlchemy exceptions into application-specific exceptions.
+
+    Infrastructure layer translates DB exceptions into app-level exceptions.
+    This keeps services free from DB implementation details.
+    """
+    if isinstance(exc, IntegrityError):
+        return IntegrityConstraintError(
+            message=str(exc.orig) if exc.orig else "Integrity constraint violated",
+        )
+    return DatabaseError(message="Database operation failed")
+
+
 async def get_session() -> AsyncGenerator[AsyncSession, None]:
     """Yield an async session for FastAPI Depends.
 
@@ -28,6 +45,11 @@ async def get_session() -> AsyncGenerator[AsyncSession, None]:
     async with async_session_factory() as session:
         try:
             yield session
+        except SQLAlchemyError as exc:
+            await session.rollback()
+            # Translate to application-level exception before re-raising
+            db_error = _translate_sqlalchemy_error(exc)
+            raise db_error from exc
         except Exception:
             await session.rollback()
             raise

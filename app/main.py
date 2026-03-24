@@ -3,11 +3,13 @@
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, status
+from fastapi.responses import JSONResponse
 
 from app.core.logger import configure_logger, get_logger
 from app.core.settings import get_settings
 from app.infrastructure.db import dispose_engine
+from app.infrastructure.exceptions import DatabaseError, detect_integrity_error
 from app.routers.candidate_router import router as candidate_router
 from app.routers.job_router import router as job_router
 
@@ -46,6 +48,31 @@ def create_app() -> FastAPI:
     @app.get("/health", tags=["health"])
     async def health_check() -> dict[str, str]:
         return {"status": "ok"}
+
+    @app.exception_handler(DatabaseError)
+    async def database_error_handler(request: Request, exc: DatabaseError) -> JSONResponse:
+        """Handle database errors with appropriate HTTP status codes."""
+        # Detect integrity constraint violations
+        is_integrity, constraint_type, detail = detect_integrity_error(exc)
+
+        if is_integrity:
+            return JSONResponse(
+                status_code=status.HTTP_409_CONFLICT,
+                content={
+                    "detail": detail,
+                    "error_type": constraint_type,
+                    "message": exc.message,
+                },
+            )
+
+        # Generic 500 for other database errors (no stack trace exposure)
+        return JSONResponse(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            content={
+                "detail": "An internal error occurred",
+                "error_type": "database_error",
+            },
+        )
 
     return app
 
