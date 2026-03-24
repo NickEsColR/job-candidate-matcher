@@ -4,7 +4,7 @@ from datetime import datetime
 from enum import StrEnum
 from typing import TYPE_CHECKING
 
-from sqlalchemy import Column, Text
+from sqlalchemy import Column, Text, UniqueConstraint
 from sqlalchemy.dialects.postgresql import JSON
 from sqlmodel import Field, Relationship, SQLModel
 
@@ -23,6 +23,9 @@ class EvaluationStatus(StrEnum):
 
 class Evaluation(SQLModel, table=True):
     __tablename__ = "evaluations"  # type: ignore[assignment]
+    __table_args__ = (
+        UniqueConstraint("candidate_id", "job_id", name="uq_candidate_job"),
+    )
 
     id: int | None = Field(default=None, primary_key=True)
     candidate_id: int = Field(foreign_key="candidates.id", index=True)
