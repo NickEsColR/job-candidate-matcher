@@ -5,25 +5,31 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
+from app.core.logger import configure_logger, get_logger
 from app.core.settings import get_settings
 from app.infrastructure.db import dispose_engine
 from app.routers.candidate_router import router as candidate_router
 from app.routers.job_router import router as job_router
 
 
+logger = get_logger(__name__)
+
+
 @asynccontextmanager
 async def lifespan(_app: FastAPI) -> AsyncGenerator[None, None]:
     """Startup / shutdown lifecycle manager."""
     settings = get_settings()
-    print(f"🚀 Starting app on {settings.app_host}:{settings.app_port}")
+    configure_logger(settings.debug)
+    logger.info("Starting app on %s:%s", settings.app_host, settings.app_port)
     yield
     await dispose_engine()
-    print("🛑 Shutting down")
+    logger.info("Shutting down")
 
 
 def create_app() -> FastAPI:
     """Factory that builds and returns the FastAPI application."""
     settings = get_settings()
+    configure_logger(settings.debug)
 
     app = FastAPI(
         title="Job Candidate Matcher",
