@@ -5,6 +5,7 @@ from unittest.mock import AsyncMock
 import pytest
 
 from app.services.candidate_service import CandidateService
+from app.services.evaluation_service import EvaluationService
 from app.services.job_service import JobService
 
 
@@ -47,3 +48,20 @@ def job_service(job_repository: AsyncMock) -> JobService:
     mock_session = AsyncMock()
     mock_session.commit = AsyncMock()
     return JobService(job_repository, mock_session)
+
+
+@pytest.fixture
+def evaluation_repository_mock() -> AsyncMock:
+    """Provide a mock repository for evaluation service tests."""
+    mock = AsyncMock()
+    mock.get_by_candidate_and_job = AsyncMock(return_value=None)
+    mock.create = AsyncMock()
+    return mock
+
+
+@pytest.fixture
+def evaluation_service(evaluation_repository_mock: AsyncMock) -> EvaluationService:
+    """Provide the evaluation service with mocked repository and session."""
+    mock_session = AsyncMock()
+    mock_session.commit = AsyncMock()
+    return EvaluationService(evaluation_repository_mock, mock_session)
