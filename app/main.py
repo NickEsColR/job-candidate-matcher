@@ -7,6 +7,7 @@ from fastapi import FastAPI
 
 from app.core.settings import get_settings
 from app.infrastructure.db import dispose_engine
+from app.routers.candidate_router import router as candidate_router
 
 
 @asynccontextmanager
@@ -31,9 +32,8 @@ def create_app() -> FastAPI:
         redoc_url="/redoc" if settings.debug else None,
     )
 
-    # TODO: mount routers here
-    # app.include_router(candidate_router, prefix="/api/v1/candidates")
-    # app.include_router(job_router, prefix="/api/v1/jobs")
+    # Mount routers
+    app.include_router(candidate_router)
 
     @app.get("/health", tags=["health"])
     async def health_check() -> dict[str, str]:
