@@ -11,6 +11,7 @@ from app.core.settings import get_settings
 from app.infrastructure.db import dispose_engine
 from app.infrastructure.exceptions import DatabaseError, detect_integrity_error
 from app.routers.candidate_router import router as candidate_router
+from app.routers.evaluation_router import router as evaluation_router
 from app.routers.job_router import router as job_router
 
 
@@ -44,6 +45,7 @@ def create_app() -> FastAPI:
     # Mount routers
     app.include_router(candidate_router)
     app.include_router(job_router)
+    app.include_router(evaluation_router)
 
     @app.get("/health", tags=["health"])
     async def health_check() -> dict[str, str]:
