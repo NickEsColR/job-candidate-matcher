@@ -4,40 +4,45 @@ title: Testing
 
 # Testing
 
-Usamos `pytest` + `pytest-asyncio`.
+We use `pytest` + `pytest-asyncio`.
 
-## Estructura
+## Structure
 
 ```text
 tests/
   support/
   unit/
     repositories/
+      conftest.py
+      test_*.py
     services/
+      conftest.py
+      test_*.py
     routers/
-  conftest.py
+      conftest.py
+      test_*.py
 ```
 
-## Convenciones
+## Conventions
 
-- `tests/support/` para builders, helpers y factories reutilizables.
-- `conftest.py` solo por scope: global o por capa.
-- `conftest.py` debe vivir cerca de los tests que consume; evitá helpers globales si aplican solo a una capa.
-- Repository tests: DB real de test.
+- `tests/support/` is for reusable builders, helpers, and factories.
+- There is no root `tests/conftest.py`; fixtures live in layer-specific `conftest.py` files under each `tests/unit/` subfolder.
+- Avoid a global `conftest.py` if the fixture only serves one layer.
+- Repository tests: real test database.
 - Service tests: repository mock.
 - Router tests: service mock.
-- `AsyncClient` solo cuando el test cruza la capa HTTP; para unit tests, mantené el aislamiento con mocks.
-- Un test = un comportamiento.
+- Use `AsyncClient` only when the test crosses the HTTP layer; for unit tests, keep isolation with mocks.
+- One test = one behavior.
 
-## Comandos
+## Commands
 
-Suite completa:
+Full suite:
 
 ```bash
 uv run python -m pytest tests
 ```
 
-Un archivo específico:
+Specific file:
 
 ```bash
 uv run python -m pytest tests/unit/services/test_candidate_service.py
