@@ -8,6 +8,7 @@ from sqlmodel import SQLModel
 
 from app.models import Candidate, Evaluation, Job, ToolLog
 from app.repositories.candidate_repository import CandidateRepository
+from app.repositories.job_repository import JobRepository
 
 TEST_DATABASE_URL = "sqlite+aiosqlite:///file::memory:?cache=shared&uri=true"
 
@@ -36,3 +37,9 @@ async def db_session() -> AsyncGenerator[AsyncSession, None]:
 def candidate_repository(db_session: AsyncSession) -> CandidateRepository:
     """Provide the concrete candidate repository."""
     return CandidateRepository(db_session)
+
+
+@pytest.fixture
+def job_repository(db_session: AsyncSession) -> JobRepository:
+    """Provide the concrete job repository."""
+    return JobRepository(db_session)
