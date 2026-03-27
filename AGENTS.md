@@ -15,5 +15,7 @@ When working on this project, load the relevant skill(s) BEFORE writing any code
 |-------|-------------|-----------|
 | `git-commit` | Git commit workflow following conventional commits | [SKILL.md](skills/git-commit/SKILL.md) |
 | `pr-creation` | Pull request workflow following conventional commits | [SKILL.md](skills/pr-creation/SKILL.md) |
-| `pytest-testing` | Testing patterns with pytest and pytest-asyncio | [SKILL.md](skills/pytest-testing/SKILL.md) |
+| `pytest` | Testing patterns with pytest and pytest-asyncio | [SKILL.md](skills/pytest/SKILL.md) |
 | `uv-python` | Ultra-fast Python package manager | [SKILL.md](skills/uv-python/SKILL.md) |
+| `langchain-agents` | LangChain v1 patterns for AI agents with create_agent | [SKILL.md](skills/langchain-agents/SKILL.md) |
+| `langchain-tests` | Testing patterns for LangChain v1 agents and tools | [SKILL.md](skills/langchain-tests/SKILL.md) |
