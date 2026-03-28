@@ -81,7 +81,7 @@ agent = create_agent(
 ### Example 2: Agent with a custom model
 
 ```python
-from langchain import init_chat_model
+from langchain.chat_models import init_chat_model
 from langchain.agents import create_agent
 
 model = init_chat_model(
@@ -126,4 +126,4 @@ uv add langchain
 
 ## Resources
 
-- **Skills**: See [langchain-test-agent](../langchain-test-agent/SKILL.md) for testing agents and tools.
+- **Skills**: See [langchain-tests](../langchain-tests/SKILL.md) for testing agents and tools.
