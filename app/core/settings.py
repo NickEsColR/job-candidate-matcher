@@ -25,8 +25,19 @@ class Settings(BaseSettings):
         default="postgresql+asyncpg://jcm_user:jcm_password@localhost:5432/job_candidate_matcher"
     )
 
+    # LLM Configuration
+    llm_provider: str = Field(...)
+    llm_model: str = Field(...)
+    llm_temperature: float = Field(default=0.0)
+    llm_max_tokens: int = Field(default=2048)
+    llm_timeout: int = Field(default=60)
+    llm_max_retries: int = Field(default=3)
+    llm_max_concurrency: int = Field(default=10)
+    llm_api_key: str | None = Field(default=None)
+    llm_base_url: str | None = Field(default=None)
+
 
 @lru_cache
 def get_settings() -> Settings:
     """Return a cached Settings singleton."""
-    return Settings()
+    return Settings()  # pyright: ignore[reportCallIssue]
