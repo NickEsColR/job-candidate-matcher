@@ -28,4 +28,8 @@ jobs:
         run: uv sync --frozen --extra dev
 
       - name: Run tests
+        env:
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          LLM_MODEL: ${{ vars.LLM_MODEL }}
+          LLM_PROVIDER: ${{ vars.LLM_PROVIDER }}
         run: uv run pytest
