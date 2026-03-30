@@ -1,7 +1,5 @@
 """Unit tests for evaluation prompts."""
 
-import pytest
-
 from app.infrastructure.llm.prompts import SYSTEM_PROMPT, build_user_prompt
 from app.schemas.evaluation import (
     CandidateEvaluationContext,

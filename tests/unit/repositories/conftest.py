@@ -6,7 +6,7 @@ import pytest
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlmodel import SQLModel
 
-from app.models import Candidate, Evaluation, Job, ToolLog
+from app.models import Candidate, Evaluation, Job
 from app.repositories.candidate_repository import CandidateRepository
 from app.repositories.evaluation_repository import EvaluationRepository
 from app.repositories.job_repository import JobRepository

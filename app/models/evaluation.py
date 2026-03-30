@@ -11,7 +11,6 @@ from sqlmodel import Field, Relationship, SQLModel
 if TYPE_CHECKING:
     from app.models.candidate import Candidate
     from app.models.job import Job
-    from app.models.tool_log import ToolLog
 
 
 class EvaluationStatus(StrEnum):
@@ -41,4 +40,3 @@ class Evaluation(SQLModel, table=True):
 
     candidate: "Candidate" = Relationship(back_populates="evaluations")
     job: "Job" = Relationship(back_populates="evaluations")
-    tool_logs: list["ToolLog"] = Relationship(back_populates="evaluation")

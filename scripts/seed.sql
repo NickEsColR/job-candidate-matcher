@@ -40,18 +40,6 @@ CREATE TABLE IF NOT EXISTS evaluations (
     completed_at TIMESTAMP
 );
 
--- Tabla de tool logs
-CREATE TABLE IF NOT EXISTS tool_logs (
-    id SERIAL PRIMARY KEY,
-    evaluation_id INTEGER NOT NULL REFERENCES evaluations(id),
-    tool_name VARCHAR NOT NULL,
-    input_data JSONB DEFAULT '{}'::jsonb,
-    output_data JSONB DEFAULT '{}'::jsonb,
-    status VARCHAR DEFAULT 'success',
-    error_message TEXT,
-    created_at TIMESTAMP DEFAULT NOW()
-);
-
 -- ============================================================
 -- Candidatos
 -- ============================================================
