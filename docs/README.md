@@ -1,13 +1,11 @@
----
-title: Documentation
----
-
 # Documentation
 
-Welcome to Job-Candidate-Matcher documentation.
+Project documentation for Job-Candidate-Matcher.
 
-## Contents
-
-- [Architecture](architecture.md) - System design and module breakdown
-- [Stack](stack.md) - Technology choices and justifications
-- [Testing](testing.md) - Testing patterns and conventions
+| Document | Description |
+|----------|-------------|
+| [API Endpoints](api.md) | Request/response format for every endpoint |
+| [Architecture](architecture.md) | Layered system design, module responsibilities, and data flow |
+| [Stack](stack.md) | Technology choices and why each was selected |
+| [Setup](setup.md) | Environment variables, LLM providers, and local development |
+| [Testing](testing.md) | Test structure, conventions, and how to run them |

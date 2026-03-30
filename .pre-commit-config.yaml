@@ -1,20 +1,29 @@
 repos:
+  # ── API (Python) ──────────────────────────────────────────────
   - repo: local
     hooks:
-      - id: uv-lockfile
-        name: Check uv.lock is up to date
+      - id: api-uv-lockfile
+        name: "api: check uv.lock"
         entry: uv lock --check
         language: system
         pass_filenames: false
+        files: ^api/
+        always_run: true
         stages: [pre-commit]
+
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.2.0
     hooks:
       - id: ruff
-        args: [--fix]
+        args: [--fix, --config=api/pyproject.toml]
+        files: ^api/
       - id: ruff-format
+        args: [--config=api/pyproject.toml]
+        files: ^api/
+
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.8.0
     hooks:
       - id: mypy
-        args: [--config-file=pyproject.toml]
+        args: [--config-file=api/pyproject.toml]
+        files: ^api/

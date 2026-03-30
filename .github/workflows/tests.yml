@@ -1,4 +1,4 @@
-name: tests
+name: api-tests
 
 on:
   push:
@@ -8,26 +8,53 @@ on:
     branches:
       - main
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: api
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Check for API changes
+        id: check-changes
+        uses: tj-actions/changed-files@v45
+        with:
+          files: |
+            api/**
+            .github/workflows/tests.yml
+          files_ignore: |
+            api/docs/**
+            api/README.md
+            api/AGENTS.md
+            api/.env.example
 
       - name: Set up Python
+        if: steps.check-changes.outputs.any_changed == 'true'
         uses: actions/setup-python@v5
         with:
-          python-version-file: .python-version
+          python-version-file: api/.python-version
 
       - name: Install uv
+        if: steps.check-changes.outputs.any_changed == 'true'
         uses: astral-sh/setup-uv@v5
 
       - name: Install dependencies
+        if: steps.check-changes.outputs.any_changed == 'true'
         run: uv sync --frozen --extra dev
 
       - name: Run tests
+        if: steps.check-changes.outputs.any_changed == 'true'
         env:
           LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
           LLM_MODEL: ${{ vars.LLM_MODEL }}
