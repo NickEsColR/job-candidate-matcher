@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 
 class EvaluationStatus(StrEnum):
     PENDING = "pending"
-    PROCESSING = "processing"
+    IN_PROGRESS = "in_progress"
     COMPLETED = "completed"
     FAILED = "failed"
 

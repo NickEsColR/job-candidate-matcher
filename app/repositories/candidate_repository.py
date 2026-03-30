@@ -1,6 +1,6 @@
 """Candidate repository — direct database interaction."""
 
-from datetime import datetime, timezone
+from datetime import datetime
 from typing import Protocol, runtime_checkable
 
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -48,7 +48,7 @@ class CandidateRepository:
 
     async def create(self, candidate: Candidate) -> Candidate:
         """Persist a new candidate and refresh from DB (fills defaults)."""
-        candidate.created_at = datetime.now(timezone.utc)
+        candidate.created_at = datetime.now()
         self._session.add(candidate)
         await self._session.flush()
         await self._session.refresh(candidate)

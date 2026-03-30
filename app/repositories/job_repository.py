@@ -1,6 +1,6 @@
 """Job repository — direct database interaction."""
 
-from datetime import datetime, timezone
+from datetime import datetime
 from typing import Protocol, runtime_checkable
 
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -33,7 +33,7 @@ class JobRepository:
         return await self._session.get(Job, job_id)
 
     async def create(self, job: Job) -> Job:
-        job.created_at = datetime.now(timezone.utc)
+        job.created_at = datetime.now()
         self._session.add(job)
         await self._session.flush()
         await self._session.refresh(job)

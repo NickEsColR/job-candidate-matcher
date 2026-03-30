@@ -1,8 +1,18 @@
 """Evaluation DTOs for request/response serialization."""
 
 from datetime import datetime
+from enum import StrEnum
 
 from pydantic import BaseModel, Field
+
+
+class EvaluationReadStatus(StrEnum):
+    """API status values exposed to clients."""
+
+    PENDING = "pending"
+    IN_PROGRESS = "in_progress"
+    COMPLETED = "completed"
+    FAILED = "failed"
 
 
 class EvaluationCreate(BaseModel):
@@ -18,7 +28,7 @@ class EvaluationRead(BaseModel):
     id: int
     candidate_id: int
     job_id: int
-    status: str
+    status: EvaluationReadStatus
     score: int | None
     summary: str | None
     strengths: list[str]

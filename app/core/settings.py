@@ -6,14 +6,17 @@ from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
+_BASE_SETTINGS_CONFIG = SettingsConfigDict(
+    env_file=".env",
+    env_file_encoding="utf-8",
+    extra="ignore",
+)
+
+
 class Settings(BaseSettings):
     """Centralized app configuration. Loaded once, validated, immutable."""
 
-    model_config = SettingsConfigDict(
-        env_file=".env",
-        env_file_encoding="utf-8",
-        extra="ignore",
-    )
+    model_config = _BASE_SETTINGS_CONFIG
 
     # App
     app_host: str = Field(default="0.0.0.0")
@@ -37,7 +40,21 @@ class Settings(BaseSettings):
     llm_base_url: str | None = Field(default=None)
 
 
+class IntegrationTestSettings(BaseSettings):
+    """Lightweight settings for integration test gating flags."""
+
+    model_config = _BASE_SETTINGS_CONFIG
+
+    run_llm_integration: bool = Field(default=False)
+
+
 @lru_cache
 def get_settings() -> Settings:
     """Return a cached Settings singleton."""
     return Settings()  # pyright: ignore[reportCallIssue]
+
+
+@lru_cache
+def get_integration_test_settings() -> IntegrationTestSettings:
+    """Return cached settings for test execution flags."""
+    return IntegrationTestSettings()  # pyright: ignore[reportCallIssue]
