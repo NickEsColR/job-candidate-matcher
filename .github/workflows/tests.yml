@@ -32,5 +32,5 @@ jobs:
           LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
           LLM_MODEL: ${{ vars.LLM_MODEL }}
           LLM_PROVIDER: ${{ vars.LLM_PROVIDER }}
-          RUN_LLM_INTEGRATION: ${{ vars.RUN_LLM_INTEGRATION }}
+          RUN_LLM_INTEGRATION: ${{ vars.RUN_LLM_INTEGRATION || '0' }}
         run: uv run pytest
