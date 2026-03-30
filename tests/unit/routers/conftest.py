@@ -24,6 +24,8 @@ def mock_service() -> AsyncMock:
     mock.update_job = AsyncMock()
     mock.delete_job = AsyncMock()
     mock.create_or_get_evaluation = AsyncMock()
+    mock.get_evaluation = AsyncMock()
+    mock.process_evaluation = AsyncMock()
     return mock
 
 

@@ -36,6 +36,32 @@ class TestEvaluationRepositoryGetByCandidateAndJob:
         assert result.job_id == 1
 
 
+class TestEvaluationRepositoryGetById:
+    """Tests for get_by_id."""
+
+    @pytest.mark.asyncio
+    async def test_returns_none_when_not_found(
+        self, evaluation_repository: EvaluationRepository
+    ) -> None:
+        """Test that None is returned when no evaluation exists for the ID."""
+        result = await evaluation_repository.get_by_id(999)
+        assert result is None
+
+    @pytest.mark.asyncio
+    async def test_returns_evaluation_when_exists(
+        self, evaluation_repository: EvaluationRepository, db_session: AsyncSession
+    ) -> None:
+        """Test that the existing evaluation is returned by ID."""
+        evaluation = make_evaluation(candidate_id=1, job_id=1)
+        db_session.add(evaluation)
+        await db_session.commit()
+        await db_session.refresh(evaluation)
+
+        result = await evaluation_repository.get_by_id(evaluation.id)
+        assert result is not None
+        assert result.id == evaluation.id
+
+
 class TestEvaluationRepositoryCreate:
     """Tests for create."""
 
@@ -86,3 +112,31 @@ class TestEvaluationRepositoryCreate:
         evaluation2 = make_evaluation(candidate_id=1, job_id=1)
         with pytest.raises(IntegrityError):
             await evaluation_repository.create(evaluation2)
+
+
+class TestEvaluationRepositoryUpdate:
+    """Tests for update."""
+
+    @pytest.mark.asyncio
+    async def test_updates_fields(
+        self, evaluation_repository: EvaluationRepository, db_session: AsyncSession
+    ) -> None:
+        """Test updating evaluation fields persists changes."""
+        evaluation = make_evaluation(candidate_id=1, job_id=1)
+        db_session.add(evaluation)
+        await db_session.commit()
+        await db_session.refresh(evaluation)
+
+        updated = await evaluation_repository.update(
+            evaluation,
+            {
+                "status": EvaluationStatus.COMPLETED.value,
+                "score": 90,
+                "summary": "Great fit",
+            },
+        )
+        await db_session.commit()
+
+        assert updated.status == EvaluationStatus.COMPLETED.value
+        assert updated.score == 90
+        assert updated.summary == "Great fit"

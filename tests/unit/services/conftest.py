@@ -54,8 +54,10 @@ def job_service(job_repository: AsyncMock) -> JobService:
 def evaluation_repository_mock() -> AsyncMock:
     """Provide a mock repository for evaluation service tests."""
     mock = AsyncMock()
+    mock.get_by_id = AsyncMock(return_value=None)
     mock.get_by_candidate_and_job = AsyncMock(return_value=None)
     mock.create = AsyncMock()
+    mock.update = AsyncMock()
     return mock
 
 
@@ -64,4 +66,16 @@ def evaluation_service(evaluation_repository_mock: AsyncMock) -> EvaluationServi
     """Provide the evaluation service with mocked repository and session."""
     mock_session = AsyncMock()
     mock_session.commit = AsyncMock()
-    return EvaluationService(evaluation_repository_mock, mock_session)
+    mock_analyzer = AsyncMock()
+    mock_analyzer.analyze = AsyncMock()
+    mock_candidate_repository = AsyncMock()
+    mock_candidate_repository.get_by_id = AsyncMock(return_value=None)
+    mock_job_repository = AsyncMock()
+    mock_job_repository.get_by_id = AsyncMock(return_value=None)
+    return EvaluationService(
+        evaluation_repository_mock,
+        mock_candidate_repository,
+        mock_job_repository,
+        mock_session,
+        analyzer=mock_analyzer,
+    )

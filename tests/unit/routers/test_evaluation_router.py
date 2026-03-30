@@ -18,8 +18,10 @@ class TestCreateEvaluation:
         self, client: AsyncClient, mock_service: AsyncMock
     ) -> None:
         """Test that posting a new candidate/job pair creates a new evaluation."""
-        evaluation = make_evaluation(evaluation_id=1, status=EvaluationStatus.PENDING.value)
-        mock_service.create_or_get_evaluation.return_value = evaluation
+        evaluation = make_evaluation(
+            evaluation_id=1, status=EvaluationStatus.PENDING.value
+        )
+        mock_service.create_or_get_evaluation.return_value = (evaluation, True)
 
         payload = evaluation_payload(candidate_id=1, job_id=1)
         response = await client.post("/api/v1/evaluations/", json=payload)
@@ -41,9 +43,9 @@ class TestCreateEvaluation:
             evaluation_id=42,
             candidate_id=1,
             job_id=1,
-            status=EvaluationStatus.PENDING.value,
+            status=EvaluationStatus.COMPLETED.value,
         )
-        mock_service.create_or_get_evaluation.return_value = existing_evaluation
+        mock_service.create_or_get_evaluation.return_value = (existing_evaluation, False)
 
         payload = evaluation_payload(candidate_id=1, job_id=1)
         response = await client.post("/api/v1/evaluations/", json=payload)
@@ -53,6 +55,37 @@ class TestCreateEvaluation:
         assert data["id"] == 42
         # Verify it was called - the service should check for existing and return it
         mock_service.create_or_get_evaluation.assert_called_once()
+
+
+class TestGetEvaluation:
+    """Tests for GET /api/v1/evaluations/{evaluation_id}."""
+
+    @pytest.mark.asyncio
+    async def test_returns_evaluation_by_id(
+        self, client: AsyncClient, mock_service: AsyncMock
+    ) -> None:
+        """Test that getting an evaluation by id returns the evaluation."""
+        evaluation = make_evaluation(
+            evaluation_id=7,
+            candidate_id=2,
+            job_id=3,
+            status=EvaluationStatus.COMPLETED.value,
+            score=88,
+            summary="Good fit",
+            strengths=["Python"],
+            weaknesses=["Cloud"],
+            recommendations=["Learn AWS"],
+        )
+        mock_service.get_evaluation.return_value = evaluation
+
+        response = await client.get("/api/v1/evaluations/7")
+
+        assert response.status_code == status.HTTP_200_OK
+        data = response.json()
+        assert data["id"] == 7
+        assert data["status"] == "completed"
+        assert data["score"] == 88
+        mock_service.get_evaluation.assert_called_once_with(7)
 
     @pytest.mark.asyncio
     async def test_returns_422_for_invalid_payload(self, client: AsyncClient) -> None:
