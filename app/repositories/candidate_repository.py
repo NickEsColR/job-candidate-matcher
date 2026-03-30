@@ -57,8 +57,7 @@ class CandidateRepository:
     async def update(self, candidate: Candidate, data: dict) -> Candidate:
         """Apply partial update fields to an existing candidate."""
         for key, value in data.items():
-            if value is not None:
-                setattr(candidate, key, value)
+            setattr(candidate, key, value)
         self._session.add(candidate)
         await self._session.flush()
         await self._session.refresh(candidate)

@@ -41,7 +41,24 @@ def detect_integrity_error(exc: Exception) -> tuple[bool, str, str | None]:
 
     Returns:
         Tuple of (is_integrity_error, constraint_type, detail_message)
+    
+    Note: The fallback string matching uses PostgreSQL-specific error messages,
+    which may vary across PostgreSQL versions. For robust detection, rely on
+    structured error info provided by IntegrityConstraintError.
     """
+    # If the exception is an IntegrityConstraintError with constraint_type already set, use it
+    if isinstance(exc, IntegrityConstraintError) and exc.constraint_type:
+        constraint_type = exc.constraint_type
+        detail_map = {
+            "unique": "A record with this value already exists",
+            "foreign_key": "Referenced record does not exist",
+            "not_null": "A required field is missing",
+            "check": "Data validation failed",
+        }
+        detail = detail_map.get(constraint_type, "Integrity constraint violated")
+        return True, constraint_type, detail
+    
+    # Fallback to string matching for backward compatibility
     error_str = str(exc).lower()
 
     # PostgreSQL unique violation

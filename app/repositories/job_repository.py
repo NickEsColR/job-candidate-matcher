@@ -41,8 +41,7 @@ class JobRepository:
 
     async def update(self, job: Job, data: dict) -> Job:
         for key, value in data.items():
-            if value is not None:
-                setattr(job, key, value)
+            setattr(job, key, value)
         self._session.add(job)
         await self._session.flush()
         await self._session.refresh(job)
