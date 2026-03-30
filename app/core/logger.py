@@ -40,6 +40,15 @@ def configure_logger(debug: bool) -> logging.Logger:
     return logging.getLogger("app")
 
 
+def stop_logger() -> None:
+    """Stop the QueueListener if running. Call during shutdown to avoid resource leaks."""
+    global _LISTENER, _CONFIGURED
+    if _LISTENER is not None:
+        _LISTENER.stop()
+        _LISTENER = None
+        _CONFIGURED = False
+
+
 def get_logger(name: str | None = None) -> logging.Logger:
     """Return a logger for the given module name."""
     return logging.getLogger(name or "app")

@@ -6,7 +6,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request, status
 from fastapi.responses import JSONResponse
 
-from app.core.logger import configure_logger, get_logger
+from app.core.logger import configure_logger, get_logger, stop_logger
 from app.core.settings import get_settings
 from app.infrastructure.db import dispose_engine
 from app.infrastructure.exceptions import DatabaseError, detect_integrity_error
@@ -25,8 +25,9 @@ async def lifespan(_app: FastAPI) -> AsyncGenerator[None, None]:
     configure_logger(settings.debug)
     logger.info("Starting app on %s:%s", settings.app_host, settings.app_port)
     yield
-    await dispose_engine()
     logger.info("Shutting down")
+    stop_logger()
+    await dispose_engine()
 
 
 def create_app() -> FastAPI:
