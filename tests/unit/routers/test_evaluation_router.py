@@ -13,9 +13,19 @@ from tests.support.evaluation import evaluation_payload, make_evaluation
 class TestCreateEvaluation:
     """Tests for POST /api/v1/evaluations/."""
 
+    @pytest.fixture(autouse=True)
+    def _mock_background_processor(self, monkeypatch: pytest.MonkeyPatch) -> AsyncMock:
+        """Prevent real background processing during router unit tests."""
+        mock = AsyncMock(return_value=None)
+        monkeypatch.setattr("app.routers.evaluation_router.process_evaluation_job", mock)
+        return mock
+
     @pytest.mark.asyncio
     async def test_creates_new_evaluation(
-        self, client: AsyncClient, mock_service: AsyncMock
+        self,
+        client: AsyncClient,
+        mock_service: AsyncMock,
+        _mock_background_processor: AsyncMock,
     ) -> None:
         """Test that posting a new candidate/job pair creates a new evaluation."""
         evaluation = make_evaluation(
@@ -32,6 +42,7 @@ class TestCreateEvaluation:
         assert data["candidate_id"] == 1
         assert data["job_id"] == 1
         assert data["status"] == "pending"
+        _mock_background_processor.assert_awaited_once_with(1)
 
     @pytest.mark.asyncio
     async def test_returns_existing_evaluation(
