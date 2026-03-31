@@ -100,3 +100,13 @@ Follow conventional-commit style: `<type>[scope]: <description>`
 - **Clean Architecture**: API follows Repository → Service → Router pattern
 - **Protocol-based DI**: Services depend on repository protocols, not concrete classes
 - **Async-first**: All database operations use async SQLAlchemy
+- **Separation of Concerns (Web)**: Components render only — logic lives in `utils/*.logic.ts` as pure TypeScript with zero framework imports
+
+---
+
+## Component-Specific Guidelines
+
+| Component | Guidelines | Critical Focus |
+|-----------|------------|----------------|
+| API (`api/`) | [api/AGENTS.md](api/AGENTS.md) | Repository → Service → Router, Protocol DI |
+| Web (`web/`) | [web/AGENTS.md](web/AGENTS.md) | Separation of logic from UI components |
