@@ -13,6 +13,7 @@ import { useJobs } from '@/hooks/useJobs'
 import { useEvaluation } from '@/hooks/useEvaluation'
 import { findCandidateById } from '@/utils/candidates.logic'
 import { findJobById } from '@/utils/jobs.logic'
+import { generateEvaluationPdf } from '@/utils/generate-evaluation-pdf'
 
 export function Dashboard() {
   const { candidates, addCandidate } = useCandidates()
@@ -49,7 +50,18 @@ export function Dashboard() {
       return <EvaluationSkeleton />
 
     if (evaluationStatus === 'completed' && evaluation) {
-      return <EvaluationCard evaluation={evaluation.completedEvaluation!} />
+      return (
+        <EvaluationCard
+          evaluation={evaluation.completedEvaluation!}
+          onGenerateReport={() =>
+            generateEvaluationPdf({
+              evaluation: evaluation.completedEvaluation!,
+              candidateName: selectedCandidate?.name ?? 'Desconocido',
+              jobTitle: selectedJob?.title ?? 'Desconocido',
+            })
+          }
+        />
+      )
     }
 
     if (evaluationStatus === 'error')
