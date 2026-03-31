@@ -6,6 +6,7 @@ import { EvaluationStateCard } from '@/cards/evaluation-state-card'
 import { EvaluationSkeleton } from '@/cards/evaluation-skeleton'
 import { Footer } from './footer'
 import { Header } from './header'
+import { CreateCandidateModal } from './create-candidate-modal'
 import { useCandidates } from '@/hooks/useCandidates'
 import { useJobs } from '@/hooks/useJobs'
 import { useEvaluation } from '@/hooks/useEvaluation'
@@ -13,8 +14,9 @@ import { findCandidateById } from '@/utils/candidates.logic'
 import { findJobById } from '@/utils/jobs.logic'
 
 export function Dashboard() {
-  const { candidates, loading: loadingCandidates } = useCandidates()
-  const { jobs, loading: loadingJobs } = useJobs()
+  const { candidates, addCandidate } = useCandidates()
+  const { jobs } = useJobs()
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const [selectedCandidateId, setSelectedCandidateId] = useState('')
   const [selectedJobId, setSelectedJobId] = useState('')
@@ -54,7 +56,7 @@ export function Dashboard() {
 
   return (
     <div class="min-h-screen bg-background font-sans text-on-background">
-      <Header />
+      <Header onCreateCandidate={() => setIsModalOpen(true)} />
 
       <main class="mx-auto max-w-screen-2xl px-8 pt-32 pb-20 max-md:px-5">
         <div class="grid grid-cols-12 gap-8">
@@ -79,6 +81,13 @@ export function Dashboard() {
       </main>
 
       <Footer />
+
+      {isModalOpen && (
+        <CreateCandidateModal
+          onClose={() => setIsModalOpen(false)}
+          onCreate={addCandidate}
+        />
+      )}
     </div>
   )
 }

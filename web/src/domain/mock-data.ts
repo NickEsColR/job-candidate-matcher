@@ -1,4 +1,4 @@
-import type { DashboardData } from '@/domain/types'
+import type { Candidate, DashboardData } from '@/domain/types'
 
 export const mockEvaluationDashboardData: DashboardData = {
   candidates: [
@@ -107,3 +107,13 @@ export const mockEvaluationDashboardData: DashboardData = {
     },
   ],
 }
+
+/**
+ * Array mutable de candidatos compartido con la capa API.
+ * La API escribe aquí; los hooks leen copias.
+ * Para cambiar a API real: reemplazar fetchCandidates/createCandidate
+ * en candidates.api.ts por fetch() — este array se ignora.
+ */
+export const mutableCandidates: Candidate[] = [
+  ...mockEvaluationDashboardData.candidates,
+]

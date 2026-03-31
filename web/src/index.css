@@ -62,3 +62,7 @@ body {
   margin: 0;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
+
+.glass-effect {
+  backdrop-filter: blur(12px);
+}
