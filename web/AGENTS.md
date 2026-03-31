@@ -3,6 +3,8 @@
 > **Skills Reference**: For detailed patterns, use these skills:
 > - [`pnpm`](../../skills/pnpm/SKILL.md) - Fast Node.js package manager
 > - [`preact-ui`](../../skills/preact-ui/SKILL.md) - Preact patterns for UI components
+> - [`tailwind-4`](../../skills/tailwind-4/SKILL.md) - Tailwind CSS 4 patterns, cn(), best practices
+> - [`zod-4`](../../skills/zod-4/SKILL.md) - Zod 4 schema validation, breaking changes from v3
 > - [`git-commit`](../../skills/git-commit/SKILL.md) - Conventional commits
 
 ### Auto-invoke Skills
