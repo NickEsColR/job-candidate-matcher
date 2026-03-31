@@ -30,7 +30,7 @@ export interface CompletedEvaluation {
   finalRecommendations: string[]
 }
 
-export type EvaluationStatus = 'completed' | 'error'
+export type EvaluationStatus = 'completed' | 'error' | 'in_progress'
 
 export interface EvaluationRecord {
   id: string

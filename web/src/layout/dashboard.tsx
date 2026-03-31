@@ -36,7 +36,7 @@ export function Dashboard() {
     }
   }, [jobs, selectedJobId])
 
-  const { evaluation, status: evaluationStatus } = useEvaluation(
+  const { evaluation, status: evaluationStatus, triggerEvaluation } = useEvaluation(
     selectedCandidateId,
     selectedJobId,
   )
@@ -45,15 +45,17 @@ export function Dashboard() {
   const selectedJob = findJobById(jobs, selectedJobId)
 
   const evaluationSection = (() => {
-    if (evaluationStatus === 'loading') return <EvaluationSkeleton />
+    if (evaluationStatus === 'loading' || evaluationStatus === 'in_progress')
+      return <EvaluationSkeleton />
 
     if (evaluationStatus === 'completed' && evaluation) {
       return <EvaluationCard evaluation={evaluation.completedEvaluation!} />
     }
 
-    if (evaluationStatus === 'error') return <EvaluationStateCard variant="error" />
+    if (evaluationStatus === 'error')
+      return <EvaluationStateCard variant="error" onAction={triggerEvaluation} />
 
-    return <EvaluationStateCard variant="empty" />
+    return <EvaluationStateCard variant="empty" onAction={triggerEvaluation} />
   })()
 
   return (
