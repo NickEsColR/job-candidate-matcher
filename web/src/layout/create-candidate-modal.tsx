@@ -200,6 +200,7 @@ export function CreateCandidateModal({
                     setSkillInput((e.currentTarget as HTMLInputElement).value)
                   }
                   onKeyDown={handleSkillKeyDown}
+                  onBlur={addSkill}
                 />
               </div>
               {errors.skills && (

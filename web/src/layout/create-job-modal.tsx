@@ -199,6 +199,7 @@ export function CreateJobModal({ onClose, onCreate }: CreateJobModalProps) {
                     )
                   }
                   onKeyDown={handleRequirementKeyDown}
+                  onBlur={addRequirement}
                 />
               </div>
               {errors.requirements && (
