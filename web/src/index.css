@@ -1,111 +1,64 @@
-:root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+@import 'tailwindcss';
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+@theme {
+  /* Design System (dark scheme) in modern OKLCH format */
+  --color-background: oklch(from #0b1326 l c h);
+  --color-on-background: oklch(from #dae2fd l c h);
+  --color-surface: oklch(from #0b1326 l c h);
+  --color-surface-dim: oklch(from #0b1326 l c h);
+  --color-surface-bright: oklch(from #31394d l c h);
+  --color-surface-container-lowest: oklch(from #060e20 l c h);
+  --color-surface-container-low: oklch(from #131b2e l c h);
+  --color-surface-container: oklch(from #171f33 l c h);
+  --color-surface-container-high: oklch(from #222a3d l c h);
+  --color-surface-container-highest: oklch(from #2d3449 l c h);
+  --color-surface-variant: oklch(from #2d3449 l c h);
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --color-primary: oklch(from #b8c3ff l c h);
+  --color-on-primary: oklch(from #002388 l c h);
+  --color-primary-container: oklch(from #2e5bff l c h);
+  --color-on-primary-container: oklch(from #efefff l c h);
+  --color-primary-fixed: oklch(from #dde1ff l c h);
+  --color-primary-fixed-dim: oklch(from #b8c3ff l c h);
+  --color-on-primary-fixed: oklch(from #001356 l c h);
+  --color-on-primary-fixed-variant: oklch(from #0035be l c h);
+  --color-inverse-primary: oklch(from #124af0 l c h);
 
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
-}
+  --color-secondary: oklch(from #b9c7df l c h);
+  --color-on-secondary: oklch(from #233144 l c h);
+  --color-secondary-container: oklch(from #3c4a5e l c h);
+  --color-on-secondary-container: oklch(from #abb9d1 l c h);
+  --color-secondary-fixed: oklch(from #d5e3fc l c h);
+  --color-secondary-fixed-dim: oklch(from #b9c7df l c h);
+  --color-on-secondary-fixed: oklch(from #0d1c2e l c h);
+  --color-on-secondary-fixed-variant: oklch(from #3a485b l c h);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
+  --color-tertiary: oklch(from #ffb59b l c h);
+  --color-on-tertiary: oklch(from #5b1a00 l c h);
+  --color-tertiary-container: oklch(from #c24100 l c h);
+  --color-on-tertiary-container: oklch(from #ffece6 l c h);
+  --color-tertiary-fixed: oklch(from #ffdbcf l c h);
+  --color-tertiary-fixed-dim: oklch(from #ffb59b l c h);
+  --color-on-tertiary-fixed: oklch(from #380d00 l c h);
+  --color-on-tertiary-fixed-variant: oklch(from #812800 l c h);
 
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
+  --color-error: oklch(from #ffb4ab l c h);
+  --color-on-error: oklch(from #690005 l c h);
+  --color-error-container: oklch(from #93000a l c h);
+  --color-on-error-container: oklch(from #ffdad6 l c h);
+
+  --color-outline: oklch(from #8e90a2 l c h);
+  --color-outline-variant: oklch(from #434656 l c h);
+  --color-on-surface: oklch(from #dae2fd l c h);
+  --color-on-surface-variant: oklch(from #c4c5d9 l c h);
+  --color-surface-tint: oklch(from #b8c3ff l c h);
+
+  --color-eval-gradient-start: oklch(from #141e3c l c h);
+  --color-eval-gradient-end: oklch(from #1b2545 l c h);
+  --color-score-max: oklch(from #9aa3c8 l c h);
 }
 
 body {
   margin: 0;
-}
-
-#app {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-}
-
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
-}
-
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
-  margin: 0;
-}
-
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
-}
-
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
