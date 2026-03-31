@@ -13,7 +13,7 @@ Job-Candidate-Matcher is an AI-powered platform that evaluates candidates agains
 | Component | Location | Tech Stack |
 |-----------|----------|------------|
 | API | `api/` | Python 3.12+, FastAPI, SQLModel, uv |
-| Web | `web/` | TBD (Angular/React) |
+| Web | `web/` | Preact, TypeScript, Vite, pnpm |
 
 ## Available Skills
 
@@ -22,6 +22,7 @@ Job-Candidate-Matcher is an AI-powered platform that evaluates candidates agains
 | Skill | Description | Location |
 |-------|-------------|----------|
 | `uv-python` | Ultra-fast Python package manager | [SKILL.md](skills/uv-python/SKILL.md) |
+| `pnpm` | Fast, disk-efficient Node.js package manager | [SKILL.md](skills/pnpm/SKILL.md) |
 | `pytest` | Testing patterns with pytest and pytest-asyncio | [SKILL.md](skills/pytest/SKILL.md) |
 | `git-commit` | Git commit workflow following conventional commits | [SKILL.md](skills/git-commit/SKILL.md) |
 | `pr-creation` | Pull request workflow | [SKILL.md](skills/pr-creation/SKILL.md) |
@@ -45,6 +46,7 @@ When performing these actions, ALWAYS invoke the corresponding skill FIRST:
 | Creating a git commit | `git-commit` |
 | Creating a pull request | `pr-creation` |
 | Working with Python packages (install, sync, run) | `uv-python` |
+| Working with Node.js packages (install, run scripts) | `pnpm` |
 | Designing LangChain agent architecture | `langchain-agent-architecture` |
 | Creating or modifying LangChain agents | `langchain-agents` |
 | Adding new features | `langchain-agent-architecture` |
@@ -59,6 +61,17 @@ uv sync --extra dev
 uv run pytest
 uv run ruff check .
 uv run ruff format .
+```
+
+---
+
+## Frontend Development
+
+```bash
+cd web
+pnpm install
+pnpm dev
+pnpm build
 ```
 
 ---
