@@ -34,6 +34,7 @@ Job-Candidate-Matcher is an AI-powered platform that evaluates candidates agains
 | `langchain-agents` | LangChain v1 patterns for AI agents with create_agent | [SKILL.md](skills/langchain-agents/SKILL.md) |
 | `langchain-agent-architecture` | Architecture decision guide for workflows, single agents, multi-agent | [SKILL.md](skills/langchain-agent-architecture/SKILL.md) |
 | `langchain-tests` | Testing patterns for LangChain v1 agents and tools | [SKILL.md](skills/langchain-tests/SKILL.md) |
+| `preact-ui` | Preact patterns for UI components, forms, and hooks | [SKILL.md](skills/preact-ui/SKILL.md) |
 
 ### Auto-invoke Skills
 
@@ -47,6 +48,7 @@ When performing these actions, ALWAYS invoke the corresponding skill FIRST:
 | Creating a pull request | `pr-creation` |
 | Working with Python packages (install, sync, run) | `uv-python` |
 | Working with Node.js packages (install, run scripts) | `pnpm` |
+| Creating or modifying Preact UI components in web/ | `preact-ui` |
 | Designing LangChain agent architecture | `langchain-agent-architecture` |
 | Creating or modifying LangChain agents | `langchain-agents` |
 | Adding new features | `langchain-agent-architecture` |
