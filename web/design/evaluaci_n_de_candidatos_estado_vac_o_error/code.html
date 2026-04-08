@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Evaluación de Élite - Dashboard de Reclutamiento</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-surface": "#dae2fd",
+                        "secondary": "#b9c7df",
+                        "on-tertiary-container": "#ffece6",
+                        "on-tertiary-fixed-variant": "#812800",
+                        "error-container": "#93000a",
+                        "on-primary": "#002388",
+                        "on-tertiary": "#5b1a00",
+                        "inverse-primary": "#124af0",
+                        "outline-variant": "#434656",
+                        "outline": "#8e90a2",
+                        "tertiary-container": "#c24100",
+                        "primary-container": "#2e5bff",
+                        "on-primary-fixed-variant": "#0035be",
+                        "tertiary-fixed": "#ffdbcf",
+                        "surface-container-lowest": "#060e20",
+                        "surface": "#0b1326",
+                        "surface-container-low": "#131b2e",
+                        "error": "#ffb4ab",
+                        "surface-container": "#171f33",
+                        "surface-dim": "#0b1326",
+                        "surface-variant": "#2d3449",
+                        "primary-fixed": "#dde1ff",
+                        "inverse-surface": "#dae2fd",
+                        "primary": "#b8c3ff",
+                        "tertiary-fixed-dim": "#ffb59b",
+                        "surface-container-high": "#222a3d",
+                        "background": "#0b1326",
+                        "on-background": "#dae2fd",
+                        "on-secondary": "#233144",
+                        "on-primary-container": "#efefff",
+                        "surface-tint": "#b8c3ff",
+                        "on-primary-fixed": "#001356",
+                        "secondary-fixed": "#d5e3fc",
+                        "on-tertiary-fixed": "#380d00",
+                        "on-secondary-container": "#abb9d1",
+                        "secondary-fixed-dim": "#b9c7df",
+                        "secondary-container": "#3c4a5e",
+                        "on-surface-variant": "#c4c5d9",
+                        "surface-bright": "#31394d",
+                        "tertiary": "#ffb59b",
+                        "inverse-on-surface": "#283044",
+                        "surface-container-highest": "#2d3449",
+                        "primary-fixed-dim": "#b8c3ff",
+                        "on-secondary-fixed-variant": "#3a485b",
+                        "on-error": "#690005",
+                        "on-secondary-fixed": "#0d1c2e",
+                        "on-error-container": "#ffdad6"
+                    },
+                    fontFamily: {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body {
+            background-color: #0b1326;
+            color: #dae2fd;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 2rem;
+        }
+    </style>
+</head>
+<body class="font-body selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-[#0b1326]/80 backdrop-blur-xl border-b border-[#2d3449]/30 shadow-[0_20px_40px_rgba(0,0,0,0.4)]">
+<div class="flex justify-between items-center w-full px-8 py-4 max-w-[1440px] mx-auto">
+<div class="text-xl font-black tracking-tighter text-[#b8c3ff]" style="">Cognaquin</div>
+<nav class="hidden md:flex items-center space-x-8">
+<a class="text-slate-400 hover:text-slate-200 transition-colors" href="#" style="">Candidatos</a>
+<a class="text-slate-400 hover:text-slate-200 transition-colors" href="#" style="">Puestos</a>
+<a class="text-[#b8c3ff] font-semibold border-b-2 border-[#b8c3ff] pb-1" href="#" style="">Evaluaciones</a>
+<a class="text-slate-400 hover:text-slate-200 transition-colors" href="#" style="">Reportes</a>
+</nav>
+<div class="flex items-center space-x-4">
+<button class="p-2 text-slate-400 hover:bg-[#171f33] rounded-lg transition-all duration-300 active:scale-95" style="">
+<span class="material-symbols-outlined" style="">notifications</span>
+</button>
+<button class="p-2 text-slate-400 hover:bg-[#171f33] rounded-lg transition-all duration-300 active:scale-95" style="">
+<span class="material-symbols-outlined" style="">settings</span>
+</button>
+<img alt="Avatar del Reclutador" class="w-10 h-10 rounded-full border border-outline-variant" data-alt="professional portrait of a recruiter with a clean background, soft lighting, modern corporate style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBji5SjL64jRIpoIa682KeMAjNlE5GWD0wgqCM8HS3F9dUvrxHVccoCWD0OrlfU5Hp-zs3nnmPN7yr9uBdsnU0u3J6GJkl0Dl9juVPw8TJI7dvHiR3arZyKJ3suhX_c7oGXxzJ45eVAIiULKK0ilvSYXnxp6COWAAJX5imtCMFa054i8IDN7rlr03zUZ3yCEr0P96b6CzSiBu3O_KJrCBDAS-8Ji6WDTfiLHJZt9dxj9TwKtO1DreKCXKYoSDpSRUkQibrncmE7AR7g" style=""/>
+</div>
+</div>
+</header>
+<main class="pt-32 pb-20 px-8 max-w-[1440px] mx-auto">
+<!-- Bento Grid Layout -->
+<div class="bento-grid">
+<!-- Card 1: Candidate Info -->
+<section class="col-span-12 lg:col-span-6 bg-surface-container-low rounded-xl p-8 border border-outline-variant/10 shadow-lg flex flex-col gap-6">
+<header>
+<span class="text-label-sm text-primary uppercase tracking-widest font-bold" style="">Perfil del Talento</span>
+<h2 class="text-3xl font-bold mt-2 text-on-surface" style="">Nombre del Candidato</h2>
+</header>
+<div class="space-y-4">
+<label class="block text-sm font-medium text-on-surface-variant" style="">Seleccionar Candidato</label>
+<div class="relative">
+<select class="w-full bg-surface-container border-none rounded-lg py-3 px-4 text-on-surface focus:ring-2 focus:ring-primary/40 appearance-none">
+<option>Adrian Villalobos</option>
+<option>Mariana Estévez</option>
+<option>Carlos Ruiz</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-3 pointer-events-none text-outline" style="">expand_more</span>
+</div>
+</div>
+<div class="space-y-6 pt-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" style="">mail</span>
+<span class="text-on-surface-variant" style="">a.villalobos@example.com</span>
+</div>
+<div class="space-y-3">
+<p class="text-sm font-semibold text-on-surface-variant" style="">Habilidades Clave</p>
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-md text-xs font-medium" style="">Arquitectura de Datos</span>
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-md text-xs font-medium" style="">Python Senior</span>
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-md text-xs font-medium" style="">Cloud Ops</span>
+</div>
+</div>
+<div class="flex justify-between items-center py-4 border-t border-outline-variant/20">
+<div>
+<p class="text-xs text-outline uppercase font-bold" style="">Experiencia</p>
+<p class="text-xl font-bold text-on-surface" style="">8 años</p>
+</div>
+<a class="flex items-center gap-2 text-primary hover:underline font-semibold" href="#" style="">
+                            Ver Currículum
+                            <span class="material-symbols-outlined text-sm" style="">open_in_new</span>
+</a>
+</div>
+</div>
+</section>
+<!-- Card 2: Job Info -->
+<section class="col-span-12 lg:col-span-6 bg-surface-container-low rounded-xl p-8 border border-outline-variant/10 shadow-lg flex flex-col gap-6">
+<header>
+<span class="text-label-sm text-tertiary uppercase tracking-widest font-bold" style="">Posición Abierta</span>
+<h2 class="text-3xl font-bold mt-2 text-on-surface" style="">Título del Puesto</h2>
+</header>
+<div class="space-y-4">
+<label class="block text-sm font-medium text-on-surface-variant" style="">Cambiar Vacante</label>
+<div class="relative">
+<select class="w-full bg-surface-container border-none rounded-lg py-3 px-4 text-on-surface focus:ring-2 focus:ring-tertiary/40 appearance-none">
+<option>Arquitecto de Soluciones Cloud</option>
+<option>Senior Frontend Engineer</option>
+<option>Data Scientist Lead</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-3 pointer-events-none text-outline" style="">expand_more</span>
+</div>
+</div>
+<div class="space-y-5">
+<div>
+<p class="text-sm font-semibold text-on-surface-variant mb-2" style="">Resumen</p>
+<p class="text-sm text-on-surface-variant leading-relaxed" style="">
+                            Buscamos un líder técnico capaz de diseñar infraestructuras escalables y seguras en entornos multi-cloud.
+                        </p>
+</div>
+<div class="space-y-2">
+<p class="text-sm font-semibold text-on-surface-variant" style="">Requisitos Principales</p>
+<ul class="text-sm text-on-surface-variant space-y-2">
+<li class="flex items-center gap-2 italic" style="">
+<span class="material-symbols-outlined text-xs text-tertiary" style="">check_circle</span>
+                                Certificación AWS Solution Architect
+                            </li>
+<li class="flex items-center gap-2 italic" style="">
+<span class="material-symbols-outlined text-xs text-tertiary" style="">check_circle</span>
+                                Experiencia con Kubernetes/Docker
+                            </li>
+</ul>
+</div>
+<div class="grid grid-cols-2 gap-4 pt-4 border-t border-outline-variant/20">
+<div>
+<p class="text-xs text-outline uppercase font-bold" style="">Ubicación</p>
+<p class="text-sm font-bold text-on-surface" style="">Remoto (LATAM)</p>
+</div>
+<div>
+<p class="text-xs text-outline uppercase font-bold" style="">Rango Salarial</p>
+<p class="text-sm font-bold text-on-surface" style="">$5.5k - $7.2k USD</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Card 3: Empty State - No evaluation exists -->
+<section class="col-span-12 bg-surface-container rounded-xl p-10 border border-outline-variant/10 shadow-2xl relative overflow-hidden">
+<div class="absolute -top-24 -right-24 w-64 h-64 bg-primary/5 blur-[100px] rounded-full"></div>
+<div class="relative z-10 flex flex-col items-center justify-center min-h-[400px] text-center max-w-2xl mx-auto">
+<div class="w-20 h-20 bg-surface-container-high rounded-3xl flex items-center justify-center mb-8 border border-outline-variant/20">
+<span class="material-symbols-outlined text-primary text-4xl" style="">assignment_late</span>
+</div>
+<span class="text-label-sm text-primary uppercase tracking-widest font-bold mb-4" style="">Métricas de Rendimiento</span>
+<h2 class="text-4xl font-black tracking-tight text-on-surface mb-4" style="">No hay evaluación</h2>
+<p class="text-lg text-on-surface-variant leading-relaxed mb-10" style="">
+                    Aún no se ha realizado un análisis técnico para este candidato en esta posición. Inicia el proceso para generar un reporte detallado de habilidades, fortalezas y áreas de mejora.
+                </p>
+<button class="px-10 py-4 bg-primary text-on-primary font-bold rounded-full hover:shadow-[0_0_25px_rgba(184,195,255,0.5)] transition-all duration-300 active:scale-95 flex items-center gap-3" style="">
+<span class="material-symbols-outlined" style="">play_arrow</span>
+                    Iniciar Nueva Evaluación
+                </button>
+</div>
+</section>
+<!-- Card 4: Error State - Evaluation failed -->
+<section class="col-span-12 bg-surface-container rounded-xl p-10 border border-error/10 shadow-2xl relative overflow-hidden mt-8">
+<div class="absolute -top-24 -right-24 w-64 h-64 bg-error/5 blur-[100px] rounded-full"></div>
+<div class="relative z-10 flex flex-col items-center justify-center min-h-[400px] text-center max-w-2xl mx-auto">
+<div class="w-20 h-20 bg-error-container/20 rounded-3xl flex items-center justify-center mb-8 border border-error/20">
+<span class="material-symbols-outlined text-error text-4xl" style="">error</span>
+</div>
+<span class="text-label-sm text-error uppercase tracking-widest font-bold mb-4" style="">Métricas de Rendimiento</span>
+<h2 class="text-4xl font-black tracking-tight text-on-surface mb-4" style="">Error en la Evaluación</h2>
+<p class="text-lg text-on-surface-variant leading-relaxed mb-10" style="">
+                    Hubo un problema técnico al procesar los datos de la evaluación. Por favor, intenta de nuevo o contacta al equipo de soporte si el error persiste.
+                </p>
+<button class="px-10 py-4 bg-surface-container-highest text-on-surface font-bold rounded-full border border-outline-variant hover:bg-surface-variant transition-all duration-300 active:scale-95 flex items-center gap-3" style="">
+<span class="material-symbols-outlined" style="">refresh</span>
+                    Reintentar Evaluación
+                </button>
+</div>
+</section>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-12 border-t border-[#131b2e] bg-[#0b1326]">
+<div class="flex flex-col md:flex-row justify-between items-center px-12 gap-6 max-w-[1440px] mx-auto">
+<p class="text-sm font-['Inter'] text-slate-500" style="">© 2024 Observatorio de Datos - Evaluación de Élite</p>
+<div class="flex gap-8">
+<a class="text-slate-500 hover:text-[#b8c3ff] transition-colors text-sm" href="#" style="">Privacidad</a>
+<a class="text-slate-500 hover:text-[#b8c3ff] transition-colors text-sm" href="#" style="">Soporte Técnico</a>
+<a class="text-slate-500 hover:text-[#b8c3ff] transition-colors text-sm" href="#" style="">Documentación API</a>
+</div>
+</div>
+</footer>
+</body></html>

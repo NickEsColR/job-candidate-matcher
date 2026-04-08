@@ -1,0 +1,119 @@
+import { useState, useEffect } from 'preact/hooks'
+import { CandidateCard } from '@/cards/candidate-card'
+import { EvaluationCard } from '@/cards/evaluation-card'
+import { JobCard } from '@/cards/job-card'
+import { EvaluationStateCard } from '@/cards/evaluation-state-card'
+import { EvaluationSkeleton } from '@/cards/evaluation-skeleton'
+import { Footer } from './footer'
+import { Header } from './header'
+import { CreateCandidateModal } from './create-candidate-modal'
+import { CreateJobModal } from './create-job-modal'
+import { useCandidates } from '@/hooks/useCandidates'
+import { useJobs } from '@/hooks/useJobs'
+import { useEvaluation } from '@/hooks/useEvaluation'
+import { findCandidateById } from '@/utils/candidates.logic'
+import { findJobById } from '@/utils/jobs.logic'
+import { generateEvaluationPdf } from '@/utils/generate-evaluation-pdf'
+
+export function Dashboard() {
+  const { candidates, addCandidate } = useCandidates()
+  const { jobs, addJob } = useJobs()
+  const [isCandidateModalOpen, setIsCandidateModalOpen] = useState(false)
+  const [isJobModalOpen, setIsJobModalOpen] = useState(false)
+
+  const [selectedCandidateId, setSelectedCandidateId] = useState('')
+  const [selectedJobId, setSelectedJobId] = useState('')
+
+  // Auto-seleccionar el primer candidato y job cuando llega la data
+  useEffect(() => {
+    if (!selectedCandidateId && candidates.length > 0) {
+      setSelectedCandidateId(candidates[0].id)
+    }
+  }, [candidates, selectedCandidateId])
+
+  useEffect(() => {
+    if (!selectedJobId && jobs.length > 0) {
+      setSelectedJobId(jobs[0].id)
+    }
+  }, [jobs, selectedJobId])
+
+  const { evaluation, status: evaluationStatus, triggerEvaluation } = useEvaluation(
+    selectedCandidateId,
+    selectedJobId,
+  )
+
+  const selectedCandidate = findCandidateById(candidates, selectedCandidateId)
+  const selectedJob = findJobById(jobs, selectedJobId)
+
+  const evaluationSection = (() => {
+    if (evaluationStatus === 'loading' || evaluationStatus === 'in_progress')
+      return <EvaluationSkeleton />
+
+    if (evaluationStatus === 'completed' && evaluation) {
+      return (
+        <EvaluationCard
+          evaluation={evaluation.completedEvaluation!}
+          onGenerateReport={() =>
+            generateEvaluationPdf({
+              evaluation: evaluation.completedEvaluation!,
+              candidateName: selectedCandidate?.name ?? 'Desconocido',
+              jobTitle: selectedJob?.title ?? 'Desconocido',
+            })
+          }
+        />
+      )
+    }
+
+    if (evaluationStatus === 'error')
+      return <EvaluationStateCard variant="error" onAction={triggerEvaluation} />
+
+    return <EvaluationStateCard variant="empty" onAction={triggerEvaluation} />
+  })()
+
+  return (
+    <div class="min-h-screen bg-background font-sans text-on-background">
+      <Header
+        onCreateCandidate={() => setIsCandidateModalOpen(true)}
+        onCreateJob={() => setIsJobModalOpen(true)}
+      />
+
+      <main class="mx-auto max-w-screen-2xl px-8 pt-32 pb-20 max-md:px-5">
+        <div class="grid grid-cols-12 gap-8">
+          <div class="col-span-12 lg:col-span-6">
+            <CandidateCard
+              candidates={candidates}
+              selectedCandidate={selectedCandidate}
+              onCandidateChange={setSelectedCandidateId}
+            />
+          </div>
+
+          <div class="col-span-12 lg:col-span-6">
+            <JobCard
+              jobs={jobs}
+              selectedJob={selectedJob}
+              onJobChange={setSelectedJobId}
+            />
+          </div>
+
+          <div class="col-span-12">{evaluationSection}</div>
+        </div>
+      </main>
+
+      <Footer />
+
+      {isCandidateModalOpen && (
+        <CreateCandidateModal
+          onClose={() => setIsCandidateModalOpen(false)}
+          onCreate={addCandidate}
+        />
+      )}
+
+      {isJobModalOpen && (
+        <CreateJobModal
+          onClose={() => setIsJobModalOpen(false)}
+          onCreate={addJob}
+        />
+      )}
+    </div>
+  )
+}

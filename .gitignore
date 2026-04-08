@@ -1,0 +1,29 @@
+# ── Python (api/) ────────────────────────────────────────────────
+api/__pycache__/
+api/**/*.py[oc]
+api/build/
+api/dist/
+api/wheels/
+api/*.egg-info
+api/.venv
+api/.pytest_cache
+api/.ruff_cache
+api/.mypy_cache
+
+# ── Node / Frontend (web/) ──────────────────────────────────────
+web/node_modules/
+web/dist/
+web/.next/
+web/.angular/
+
+# ── Environment variables ───────────────────────────────────────
+.env
+**/.env
+
+# ── IDE ─────────────────────────────────────────────────────────
+.vscode/
+.idea/
+
+# ── OS ──────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
